@@ -5,11 +5,14 @@ from pygame.locals import *
 def main():
     # Initialise screen
     pygame.init()
-    screen = pygame.display.set_mode((320, 480))
+    #screen = pygame.display.set_mode((480, 320))
+    screen = pygame.display.set_mode((480, 320), pygame.FULLSCREEN)
     pygame.display.set_caption('Roommate Tracker')
+    #screen = pygame.display.toggle_fullscreen()
 
     # Fill background
     background = pygame.Surface(screen.get_size())
+    #background = pygame.Surface((480, 320))
     background = background.convert()
     background.fill((250, 250, 250))
 
@@ -25,11 +28,14 @@ def main():
     pygame.display.flip()
 
     # Event loop
-    while 1:
+    running  = True
+    while running:
         for event in pygame.event.get():
             if event.type == QUIT:
                 return
-
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False  # Set running to False to end the while loop.
         screen.blit(background, (0, 0))
         pygame.display.flip()
 
