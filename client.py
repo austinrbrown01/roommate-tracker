@@ -9,29 +9,34 @@ pygame.display.set_caption('Roommate Tracker')
 # Fill background
 background = pygame.Surface(screen.get_size())
 background = background.convert()
-background.fill((250, 250, 250))
+background.fill((142, 176, 232))
 clock = pygame.time.Clock()
 buttons = pygame.sprite.Group()
 screen.blit(background, (0, 0))
 pygame.display.flip()
 class Button(pygame.sprite.Sprite):
     def __init__(self, position, text, size,
-        colors="white on blue",
-        hover_colors="red on green",
-        style=1, borderc=(255,255,255),
+        fgcolor,
+        bgcolor,
+        #hover_colors="red on green",
+        style=1,
+        borderc=(255,255,255),
         command=lambda: print("No command activated for this button")):
         # the hover_colors attribute needs to be fixed
         super().__init__()
         self.text = text
         self.command = command
         # --- colors ---
-        self.colors = colors
-        self.original_colors = colors
-        self.fg, self.bg = self.colors.split(" on ")
-        if hover_colors == "red on green":
-            self.hover_colors = f"{self.bg} on {self.fg}"
-        else:
-            self.hover_colors = hover_colors
+      #  self.colors = colors
+        #self.original_colors = colors
+        #self.fg, self.bg = self.colors.split(" on ")
+        self.fg = fgcolor
+        self.bg = bgcolor
+
+        # if hover_colors == "red on green":
+        #     self.hover_colors = f"{self.bg} on {self.fg}"
+        # else:
+        #     self.hover_colors = hover_colors
         self.style = style
         self.borderc = borderc # for the style2
         # font
@@ -45,16 +50,18 @@ class Button(pygame.sprite.Sprite):
         buttons.add(self)
  
     def render(self):
-        self.text_render = self.font.render(self.text, 1, self.fg)
+        self.text_render = self.font.render(self.text, True, self.fg)
+        #self.text_render = self.font.render(self.text, True, (0,0,0))
         self.image = self.text_render
  
     def update(self):
-        self.fg, self.bg = self.colors.split(" on ")
+        #self.fg = (0,0,0)
+        #self.bg = (0,255,0)
         if self.style == 1:
             self.draw_button1()
         elif self.style == 2:
             self.draw_button2()
-        self.hover()
+        #self.hover()
         self.click()
  
     def draw_button1(self):
@@ -73,16 +80,16 @@ class Button(pygame.sprite.Sprite):
         pygame.draw.rect(screen, self.bg, (self.x, self.y, self.w , self.h))
         pygame.gfxdraw.rectangle(screen, (self.x, self.y, self.w , self.h), self.borderc)
  
-    def hover(self):
-        ''' checks if the mouse is over the button and changes the color if it is true '''
-        if self.rect.collidepoint(pygame.mouse.get_pos()):
-            # you can change the colors when the pointer is on the button if you want
-            self.colors = self.hover_colors
-            # pygame.mouse.set_cursor(*pygame.cursors.diamond)
-        else:
-            self.colors = self.original_colors
+    # def hover(self):
+    #     ''' checks if the mouse is over the button and changes the color if it is true '''
+    #     if self.rect.collidepoint(pygame.mouse.get_pos()):
+    #         # you can change the colors when the pointer is on the button if you want
+    #         self.colors = self.hover_colors
+    #         # pygame.mouse.set_cursor(*pygame.cursors.diamond)
+    #     else:
+    #         self.colors = self.original_colors
             
-        self.render()
+    #     self.render()
  
     def click(self):
         ''' checks if you click on the button and makes the call to the action just one time'''
@@ -108,15 +115,37 @@ def on_run():
  
 def on_save():
     print("This is Save")
+
+def austin_button_command():
+    print("You clicked austin's button")
+
+def zach_button_command():
+    print("You clicked zach's button")
+
+def alex_button_command():
+    print("You clicked alex's button")
+
+def jack_button_command():
+    print("You clicked jack's button")
  
 def buttons_def():
-    b0 = Button((10, 10), "Click me now", 55, "black on white",
-        command=on_click)
-    b1 = Button((10, 100), "Run the program", 40, "black on red", command=on_run)
+    # b0 = Button((10, 10), "Click me now", 55, (0,0,0), (0,255,0),
+    #     command=on_click)
+    # b1 = Button((10, 100), "Run the program", 40, (0,0,0), (0,255,0), command=on_run)
  
-    b2 = Button((10, 170), "Save this file", 36, "red on yellow",
-        hover_colors="blue on orange", style=2, borderc=(255,255,0),
-        command=on_save)
+    # b2 = Button((10, 170), "Save this file", 36, (0,0,0), (0,255,0),
+    #      style=2, borderc=(255,255,0),
+    #     command=on_save)
+    austin_button = Button((10, 10), "Austin is Home", 33, (0,0,0), (0,255,0),
+        command=austin_button_command)
+    zach_button = Button((200, 10), "Zach is Home", 33, (0,0,0), (0,255,0),
+        command=zach_button_command)
+    alex_button = Button((10, 200), "Alex is Home", 33, (0,0,0), (0,255,0),
+        command=alex_button_command)
+    jack_button = Button((200, 200), "Jack is Home", 33, (0,0,0), (0,255,0),
+        command=jack_button_command)
+
+    
  
 # ======================= this code is just for example, start the program from the main file
 # in the main folder, I mean, you can also use this file only, but I prefer from the main file
