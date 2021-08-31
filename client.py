@@ -8,6 +8,7 @@ pygame.init()
 #screen = pygame.display.set_mode((480, 320), pygame.FULLSCREEN)
 screen = pygame.display.set_mode((480, 320))
 pygame.display.set_caption('Roommate Tracker')
+ddbHelper = dynamoHelper.dynamoDbHelper()
 # Fill background
 background = pygame.Surface(screen.get_size())
 background = background.convert()
@@ -64,6 +65,7 @@ class Button(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
         self.position = position
         self.pressed = 1
+        self.ddbHelper = dynamoHelper.dynamoDbHelper()
         self.is_here = True
         buttons.add(self)
  
@@ -131,9 +133,9 @@ def toggle_here(button):
     button.update_color()
     button.update_text()
     if (button.is_here):
-        dynamoHelper.update_roommate_status(button.name, 'HOME')
+        ddbHelper.update_roommate_status(button.name, 'HOME')
     else:
-        dynamoHelper.update_roommate_status(button.name, 'AWAY')
+        ddbHelper.update_roommate_status(button.name, 'AWAY')
     
 def buttons_def():
     # b0 = Button((10, 10), "Click me now", 55, (0,0,0), (0,255,0),
