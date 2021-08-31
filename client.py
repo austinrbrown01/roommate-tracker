@@ -2,7 +2,7 @@ import pygame
 from pygame import display
 import pygame.gfxdraw
 import sys
- 
+import dynamoHelper
  
 pygame.init()
 #screen = pygame.display.set_mode((480, 320), pygame.FULLSCREEN)
@@ -130,6 +130,10 @@ def toggle_here(button):
     button.is_here = not (button.is_here)
     button.update_color()
     button.update_text()
+    if (button.is_here):
+        dynamoHelper.update_roommate_status(button.name, 'HOME')
+    else:
+        dynamoHelper.update_roommate_status(button.name, 'AWAY')
     
 def buttons_def():
     # b0 = Button((10, 10), "Click me now", 55, (0,0,0), (0,255,0),

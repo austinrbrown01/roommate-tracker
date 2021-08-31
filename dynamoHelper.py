@@ -7,16 +7,15 @@ session = boto3.session.Session(aws_access_key_id=access_key, aws_secret_access_
 
 dynamodb = session.client('dynamodb')
 
-
-
 def update_roommate_status(name, status):
     dynamodb.put_item(
         TableName = 'roommate-status',
         Item={
-            name: {
+            'name': {
+                'S': name
+            },
+            'status': {
                 'S': status
             }
         }
     )
-update_roommate_status('test-austin', "home")
-
