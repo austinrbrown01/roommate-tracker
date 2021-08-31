@@ -5,8 +5,8 @@ import sys
  
  
 pygame.init()
-screen = pygame.display.set_mode((480, 320), pygame.FULLSCREEN)
-#screen = pygame.display.set_mode((480, 320))
+#screen = pygame.display.set_mode((480, 320), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((480, 320))
 pygame.display.set_caption('Roommate Tracker')
 # Fill background
 background = pygame.Surface(screen.get_size())
@@ -34,7 +34,7 @@ buttons = pygame.sprite.Group()
 screen.blit(background, (0, 0))
 pygame.display.flip()
 class Button(pygame.sprite.Sprite):
-    def __init__(self, position, text, size,
+    def __init__(self, position, name, size,
         fgcolor,
         bgcolor,
         #hover_colors="red on green",
@@ -43,19 +43,11 @@ class Button(pygame.sprite.Sprite):
         command=lambda: print("No command activated for this button")):
         # the hover_colors attribute needs to be fixed
         super().__init__()
-        self.text = text
+        self.name = name
         self.command = command
-        # --- colors ---
-      #  self.colors = colors
-        #self.original_colors = colors
-        #self.fg, self.bg = self.colors.split(" on ")
         self.fg = fgcolor
         self.bg = bgcolor
-
-        # if hover_colors == "red on green":
-        #     self.hover_colors = f"{self.bg} on {self.fg}"
-        # else:
-        #     self.hover_colors = hover_colors
+        self.text = self.name + " - HOME"
         self.style = style
         self.borderc = borderc # for the style2
         # font
@@ -66,6 +58,7 @@ class Button(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
         self.position = position
         self.pressed = 1
+        self.is_here = True
         buttons.add(self)
  
     def render(self):
@@ -99,51 +92,39 @@ class Button(pygame.sprite.Sprite):
         pygame.draw.rect(screen, self.bg, (self.x, self.y, self.w , self.h))
         pygame.gfxdraw.rectangle(screen, (self.x, self.y, self.w , self.h), self.borderc)
 
-    def update_pos(self):
-        self.x, self.y, self.w , self.h = self.text_render.get_rect()
-        position = self.x, self.y
-        self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
-        self.position = position
+    def update_color(self):
+        if (self.is_here):
+            self.bg = (0,255,0)
+        else:
+            self.bg = (255,255,0)
         self.render()
- 
-    # def hover(self):
-    #     ''' checks if the mouse is over the button and changes the color if it is true '''
-    #     if self.rect.collidepoint(pygame.mouse.get_pos()):
-    #         # you can change the colors when the pointer is on the button if you want
-    #         self.colors = self.hover_colors
-    #         # pygame.mouse.set_cursor(*pygame.cursors.diamond)
-    #     else:
-    #         self.colors = self.original_colors
-            
-    #     self.render()
+
+    
+    def update_text(self):
+        if (self.is_here):
+            self.text = self.name + " - HOME"
+        else:
+            self.text = self.name + " - AWAY"
+        self.render()
  
     def click(self):
         ''' checks if you click on the button and makes the call to the action just one time'''
         if self.rect.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0] and self.pressed == 1:
                 print("Execunting code for button '" + self.text + "'")
-                self.command()
+                self.command(self)
                 self.pressed = 0
             if pygame.mouse.get_pressed() == (0,0,0):
                 self.pressed = 1
  
- 
- 
- 
-# FUNCTIONS for the buttons on click
-# I used this convention ... on_+text of the button
-def austin_button_command():
-    print("You clicked austin's button")
 
-def zach_button_command():
-    print("You clicked zach's button")
 
-def alex_button_command():
-    print("You clicked alex's button")
-
-def jack_button_command():
-    print("You clicked jack's button")
- 
+def toggle_here(button):
+    print("toggling here for " + button.name + "'s button.")
+    button.is_here = not (button.is_here)
+    button.update_color()
+    button.update_text()
+    
 def buttons_def():
     # b0 = Button((10, 10), "Click me now", 55, (0,0,0), (0,255,0),
     #     command=on_click)
@@ -152,14 +133,14 @@ def buttons_def():
     # b2 = Button((10, 170), "Save this file", 36, (0,0,0), (0,255,0),
     #      style=2, borderc=(255,255,0),
     #     command=on_save)
-    austin_button = Button((0, 85), "Austin - HOME", 33, (0,0,0), (0,255,0),
-        command=austin_button_command)
-    zach_button = Button((0, 85), "Zach - HOME", 33, (0,0,0), (0,255,0),
-        command=zach_button_command)
-    alex_button = Button((0, 200), "Alex - HOME", 33, (0,0,0), (0,255,0),
-        command=alex_button_command)
-    jack_button = Button((0, 200), "Jack - HOME", 33, (0,0,0), (0,255,0),
-        command=jack_button_command)
+    austin_button = Button((0, 85), "Austin", 33, (0,0,0), (0,255,0),
+        command=toggle_here)
+    zach_button = Button((0, 85), "Zach", 33, (0,0,0), (0,255,0),
+        command=toggle_here)
+    alex_button = Button((0, 200), "Alex", 33, (0,0,0), (0,255,0),
+        command=toggle_here)
+    jack_button = Button((0, 200), "Jack", 33, (0,0,0), (0,255,0),
+        command=toggle_here)
 
     austinpos = austin_button.rect
     austinpos.centerx = background.get_rect().centerx / 2
