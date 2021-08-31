@@ -18,17 +18,23 @@ subtitleFont = pygame.font.Font(None, 25)
 titleText = titleFont.render("Austin's Roommate Tracking System", 1, (10, 10, 10))
 titleTextPos = titleText.get_rect()
 titleTextPos.centerx = background.get_rect().centerx
+titleTextPos.move_ip(0,5)
 subtitle1Text = subtitleFont.render("Press your name to toggle here/away, view live data at", 1, (10,10,10))
 subtitle1TextPos = subtitle1Text.get_rect()
 subtitle1TextPos.centerx = background.get_rect().centerx
-subtitle1TextPos.move_ip(0,25)
+subtitle1TextPos.move_ip(0,40)
 subtitle2Text = subtitleFont.render("roommates.austinbrown.dev", 1, (10,10,10))
 subtitle2TextPos = subtitle2Text.get_rect()
 subtitle2TextPos.centerx = background.get_rect().centerx
-subtitle2TextPos.move_ip(0,45)
+subtitle2TextPos.move_ip(0,60)
+subtitle3Text = subtitleFont.render("Tip: briefly hold your finger on the screen while tapping", 1, (10,10,10))
+subtitle3TextPos = subtitle3Text.get_rect()
+subtitle3TextPos.centerx = background.get_rect().centerx
+subtitle3TextPos.move_ip(0,280)
 background.blit(titleText, titleTextPos)
 background.blit(subtitle1Text, subtitle1TextPos)
 background.blit(subtitle2Text, subtitle2TextPos)
+background.blit(subtitle3Text, subtitle3TextPos)
 clock = pygame.time.Clock()
 buttons = pygame.sprite.Group()
 screen.blit(background, (0, 0))
@@ -133,13 +139,13 @@ def buttons_def():
     # b2 = Button((10, 170), "Save this file", 36, (0,0,0), (0,255,0),
     #      style=2, borderc=(255,255,0),
     #     command=on_save)
-    austin_button = Button((0, 85), "Austin", 33, (0,0,0), (0,255,0),
+    austin_button = Button((0, 95), "Austin", 33, (0,0,0), (0,255,0),
         command=toggle_here)
-    zach_button = Button((0, 85), "Zach", 33, (0,0,0), (0,255,0),
+    zach_button = Button((0, 95), "Zach", 33, (0,0,0), (0,255,0),
         command=toggle_here)
-    alex_button = Button((0, 200), "Alex", 33, (0,0,0), (0,255,0),
+    alex_button = Button((0, 210), "Alex", 33, (0,0,0), (0,255,0),
         command=toggle_here)
-    jack_button = Button((0, 200), "Jack", 33, (0,0,0), (0,255,0),
+    jack_button = Button((0, 210), "Jack", 33, (0,0,0), (0,255,0),
         command=toggle_here)
 
     austinpos = austin_button.rect
