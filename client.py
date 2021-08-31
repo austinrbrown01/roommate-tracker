@@ -24,7 +24,7 @@ subtitle1Text = subtitleFont.render("Press your name to toggle here/away, view l
 subtitle1TextPos = subtitle1Text.get_rect()
 subtitle1TextPos.centerx = background.get_rect().centerx
 subtitle1TextPos.move_ip(0,40)
-subtitle2Text = subtitleFont.render("roommates.austinbrown.dev", 1, (10,10,10))
+subtitle2Text = subtitleFont.render("roommates.austinbrown.dev/1053", 1, (10,10,10))
 subtitle2TextPos = subtitle2Text.get_rect()
 subtitle2TextPos.centerx = background.get_rect().centerx
 subtitle2TextPos.move_ip(0,60)
