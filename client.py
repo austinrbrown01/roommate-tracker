@@ -1,15 +1,34 @@
 import pygame
+from pygame import display
 import pygame.gfxdraw
 import sys
  
  
 pygame.init()
-screen = pygame.display.set_mode((480, 320))
+screen = pygame.display.set_mode((480, 320), pygame.FULLSCREEN)
+#screen = pygame.display.set_mode((480, 320))
 pygame.display.set_caption('Roommate Tracker')
 # Fill background
 background = pygame.Surface(screen.get_size())
 background = background.convert()
 background.fill((142, 176, 232))
+# Display some text
+titleFont = pygame.font.Font(None, 36)
+subtitleFont = pygame.font.Font(None, 25)
+titleText = titleFont.render("Austin's Roommate Tracking System", 1, (10, 10, 10))
+titleTextPos = titleText.get_rect()
+titleTextPos.centerx = background.get_rect().centerx
+subtitle1Text = subtitleFont.render("Press your name to toggle here/away, view live data at", 1, (10,10,10))
+subtitle1TextPos = subtitle1Text.get_rect()
+subtitle1TextPos.centerx = background.get_rect().centerx
+subtitle1TextPos.move_ip(0,25)
+subtitle2Text = subtitleFont.render("roommates.austinbrown.dev", 1, (10,10,10))
+subtitle2TextPos = subtitle2Text.get_rect()
+subtitle2TextPos.centerx = background.get_rect().centerx
+subtitle2TextPos.move_ip(0,45)
+background.blit(titleText, titleTextPos)
+background.blit(subtitle1Text, subtitle1TextPos)
+background.blit(subtitle2Text, subtitle2TextPos)
 clock = pygame.time.Clock()
 buttons = pygame.sprite.Group()
 screen.blit(background, (0, 0))
@@ -79,6 +98,13 @@ class Button(pygame.sprite.Sprite):
         ''' a linear border '''
         pygame.draw.rect(screen, self.bg, (self.x, self.y, self.w , self.h))
         pygame.gfxdraw.rectangle(screen, (self.x, self.y, self.w , self.h), self.borderc)
+
+    def update_pos(self):
+        self.x, self.y, self.w , self.h = self.text_render.get_rect()
+        position = self.x, self.y
+        self.rect = pygame.Rect(self.x, self.y, self.w, self.h)
+        self.position = position
+        self.render()
  
     # def hover(self):
     #     ''' checks if the mouse is over the button and changes the color if it is true '''
@@ -106,16 +132,6 @@ class Button(pygame.sprite.Sprite):
  
 # FUNCTIONS for the buttons on click
 # I used this convention ... on_+text of the button
- 
-def on_click():
-    print("Ciao bello")
- 
-def on_run():
-    print("Ciao bello questo è RUN")
- 
-def on_save():
-    print("This is Save")
-
 def austin_button_command():
     print("You clicked austin's button")
 
@@ -136,15 +152,34 @@ def buttons_def():
     # b2 = Button((10, 170), "Save this file", 36, (0,0,0), (0,255,0),
     #      style=2, borderc=(255,255,0),
     #     command=on_save)
-    austin_button = Button((10, 10), "Austin is Home", 33, (0,0,0), (0,255,0),
+    austin_button = Button((0, 85), "Austin - HOME", 33, (0,0,0), (0,255,0),
         command=austin_button_command)
-    zach_button = Button((200, 10), "Zach is Home", 33, (0,0,0), (0,255,0),
+    zach_button = Button((0, 85), "Zach - HOME", 33, (0,0,0), (0,255,0),
         command=zach_button_command)
-    alex_button = Button((10, 200), "Alex is Home", 33, (0,0,0), (0,255,0),
+    alex_button = Button((0, 200), "Alex - HOME", 33, (0,0,0), (0,255,0),
         command=alex_button_command)
-    jack_button = Button((200, 200), "Jack is Home", 33, (0,0,0), (0,255,0),
+    jack_button = Button((0, 200), "Jack - HOME", 33, (0,0,0), (0,255,0),
         command=jack_button_command)
 
+    austinpos = austin_button.rect
+    austinpos.centerx = background.get_rect().centerx / 2
+    austin_button.x = austinpos.x
+    austin_button.y = austinpos.y
+
+    zachpos = zach_button.rect
+    zachpos.centerx = background.get_rect().centerx * 1.5
+    zach_button.x = zachpos.x
+    zach_button.y = zachpos.y
+
+    jackpos = jack_button.rect
+    jackpos.centerx = background.get_rect().centerx / 2
+    jack_button.x = jackpos.x
+    jack_button.y = jack_button.y
+
+    alexpos = alex_button.rect
+    alexpos.centerx = background.get_rect().centerx * 1.5
+    alex_button.x = alexpos.x
+    alex_button.y = alexpos.y
     
  
 # ======================= this code is just for example, start the program from the main file
